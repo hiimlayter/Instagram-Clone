@@ -1,0 +1,98 @@
+Table follow {
+  following_user_id int
+  followed_user_id int
+  created_at timestamp 
+}
+
+Table user {
+  id int [primary key]
+  username varchar
+  description varchar
+  created_at datetime
+  profile_picture_image_id bigint
+}
+Ref: user.id < follow.following_user_id
+Ref: user.id < follow.followed_user_id
+Ref: user.profile_picture_image_id - image.id
+
+Table post {
+  id bigint [primary key]
+  title varchar
+  body text
+  user_id int
+  status varchar
+  created_at datetime
+}
+Ref: post.user_id > user.id
+
+Table post_image{
+  image_id bigint
+  post_id bigint
+  sequence int
+}
+Ref: post_image.post_id > post.id
+Ref: post_image.image_id - image.id
+
+Table like {
+  post_id bigint
+  user_id int
+  liked_at datetime
+}
+Ref: like.post_id > post.id
+Ref: like.user_id > user.id
+
+Table image {
+  id bigint [primary key]
+  filename varchar
+  content image
+}
+
+Table comment {
+  id bigint [primary key]
+  post_id bigint
+  user_id int
+  content varchar
+  added_at datetime
+}
+Ref: comment.post_id > post.id
+Ref: comment.user_id > user.id
+
+Table conversation {
+  id bigint [primary key]
+  name varchar
+  last_message_id bigint
+  picture_image_id bigint
+  created_by_user_id int
+  creation_date datetime
+}
+Ref: conversation.last_message_id - message.id
+Ref: conversation.picture_image_id - image.id
+
+Table conversation_user {
+  user_id int
+  conversation_id bigint
+  nickname varchar
+  added_at datetime
+}
+Ref: conversation.created_by_user_id > user.id
+Ref: conversation_user.conversation_id < conversation.id
+Ref: conversation_user.user_id < user.id
+
+Table message {
+  id bigint [primary key]
+  conversation_id int
+  user_id int
+  content varchar
+  image_id bigint
+  message_type_id int
+  send_date datetime
+}
+Ref: message.conversation_id > conversation.id
+Ref: message.user_id > user.id
+Ref: message.image_id - image.id
+Ref: message.message_type_id > message_type.id
+
+Table message_type {
+  id int [primary key]
+  support_name varchar
+}
