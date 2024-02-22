@@ -1,4 +1,20 @@
+using Serilog;
+using Serilog.Debugging;
+using System.Diagnostics;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//Logging
+
+SelfLog.Enable(msg => Debug.WriteLine(msg));
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(new ConfigurationBuilder().AddJsonFile("serilog-configuration.json").Build())
+    .Enrich.FromLogContext()
+    .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
+
 
 // Add services to the container.
 
