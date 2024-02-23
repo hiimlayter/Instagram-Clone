@@ -1,14 +1,14 @@
 Table Follow {
-  FollowingUserId int
-  FollowedUserId int
-  FollowDate datetime 
+  FollowingUserId int [not null]
+  FollowedUserId int [not null]
+  FollowDate datetime [not null]
 }
 
 Table ApplicationUser {
   Id int [primary key]
-  Username varchar
+  Username varchar [not null]
   Description varchar
-  CreationDate datetime
+  CreationDate datetime [not null]
   ProfilePictureImageId bigint
 }
 Ref: ApplicationUser.Id < Follow.FollowingUserId
@@ -18,46 +18,46 @@ Ref: ApplicationUser.ProfilePictureImageId - Image.Id
 Table Post {
   Id bigint [primary key]
   Body text
-  UserId int
-  PostStatusId int
-  CreationDate datetime
+  UserId int [not null]
+  PostStatusId int [not null]
+  CreationDate datetime [not null]
 }
 Ref: Post.UserId > ApplicationUser.Id
 Ref: Post.PostStatusId > PostStatus.Id
 
 Table PostStatus {
-  Id int
+  Id int [primary key]
   SupportName varchar
 }
 
 Table PostImage{
-  ImageId bigint
-  PostId bigint
-  Sequence int
+  ImageId bigint [not null]
+  PostId bigint [not null]
+  Sequence int [not null]
 }
 Ref: PostImage.PostId > Post.Id
 Ref: PostImage.ImageId - Image.Id
 
 Table Like {
-  PostId bigint
-  UserId int
-  LikeDate datetime
+  PostId bigint [not null]
+  UserId int [not null]
+  LikeDate datetime [not null]
 }
 Ref: Like.PostId > Post.Id
 Ref: Like.UserId > ApplicationUser.Id
 
 Table Image {
   Id bigint [primary key]
-  Filename varchar
-  Content varchar
+  Filename varchar [not null]
+  Content varchar [not null]
 }
 
 Table Comment {
   Id bigint [primary key]
-  PostId bigint
-  UserId int
-  Content varchar
-  AddDate datetime
+  PostId bigint [not null]
+  UserId int [not null]
+  Content varchar [not null]
+  AddDate datetime [not null]
 }
 Ref: Comment.PostId > Post.Id
 Ref: Comment.UserId > ApplicationUser.Id
@@ -67,30 +67,30 @@ Table Conversation {
   Name varchar
   LastMessageId bigint
   PictureImageId bigint
-  CreatedByUserId int
-  CreationDate datetime
+  CreatedByUserId int [not null]
+  CreationDate datetime [not null]
 }
 Ref: Conversation.LastMessageId - Message.Id
 Ref: Conversation.PictureImageId - Image.Id
 Ref: Conversation.CreatedByUserId > ApplicationUser.Id
 
 Table ConversationUser {
-  UserId int
-  ConversationId bigint
+  UserId int [not null]
+  ConversationId bigint [not null]
   Nickname varchar
-  AddDate datetime
+  AddDate datetime [not null]
 }
 Ref: ConversationUser.ConversationId < Conversation.Id
 Ref: ConversationUser.UserId < ApplicationUser.Id
 
 Table Message {
   Id bigint [primary key]
-  ConversationId int
-  UserId int
+  ConversationId int [not null]
+  UserId int [not null]
   Content varchar
   ImageId bigint
-  MessageTypeId int
-  SendDate datetime
+  MessageTypeId int [not null]
+  SendDate datetime [not null]
 }
 Ref: Message.ConversationId > Conversation.Id
 Ref: Message.UserId > ApplicationUser.Id
