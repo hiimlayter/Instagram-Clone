@@ -1,98 +1,98 @@
-Table follow {
-  following_user_id int
-  followed_user_id int
-  created_at timestamp 
+Table Follow {
+  FollowingUserId int
+  FollowedUserId int
+  CreationDate timestamp 
 }
 
-Table user {
-  id int [primary key]
-  username varchar
-  description varchar
-  created_at datetime
-  profile_picture_image_id bigint
+Table ApplicationUser {
+  Id int [primary key]
+  Username varchar
+  Description varchar
+  CreationDate datetime
+  ProfilePictureImageId bigint
 }
-Ref: user.id < follow.following_user_id
-Ref: user.id < follow.followed_user_id
-Ref: user.profile_picture_image_id - image.id
+Ref: ApplicationUser.Id < Follow.FollowingUserId
+Ref: ApplicationUser.Id < Follow.FollowedUserId
+Ref: ApplicationUser.ProfilePictureImageId - Image.Id
 
-Table post {
-  id bigint [primary key]
-  title varchar
-  body text
-  user_id int
-  status varchar
-  created_at datetime
+Table Post {
+  Id bigint [primary key]
+  Title varchar
+  Body text
+  UserId int
+  Status varchar
+  CreationDate datetime
 }
-Ref: post.user_id > user.id
+Ref: Post.UserId > ApplicationUser.Id
 
-Table post_image{
-  image_id bigint
-  post_id bigint
-  sequence int
+Table PostImage{
+  ImageId bigint
+  PostId bigint
+  Sequence int
 }
-Ref: post_image.post_id > post.id
-Ref: post_image.image_id - image.id
+Ref: PostImage.PostId > Post.Id
+Ref: PostImage.ImageId - Image.Id
 
-Table like {
-  post_id bigint
-  user_id int
-  liked_at datetime
+Table Like {
+  PostId bigint
+  UserId int
+  LikeDate datetime
 }
-Ref: like.post_id > post.id
-Ref: like.user_id > user.id
+Ref: Like.PostId > Post.Id
+Ref: Like.UserId > ApplicationUser.Id
 
-Table image {
-  id bigint [primary key]
-  filename varchar
-  content image
+Table Image {
+  Id bigint [primary key]
+  Filename varchar
+  Content image
 }
 
-Table comment {
-  id bigint [primary key]
-  post_id bigint
-  user_id int
-  content varchar
-  added_at datetime
+Table Comment {
+  Id bigint [primary key]
+  PostId bigint
+  UserId int
+  Content varchar
+  AddDate datetime
 }
-Ref: comment.post_id > post.id
-Ref: comment.user_id > user.id
+Ref: Comment.PostId > Post.Id
+Ref: Comment.UserId > ApplicationUser.Id
 
-Table conversation {
-  id bigint [primary key]
-  name varchar
-  last_message_id bigint
-  picture_image_id bigint
-  created_by_user_id int
-  creation_date datetime
+Table Conversation {
+  Id bigint [primary key]
+  Name varchar
+  LastMessageId bigint
+  PictureImageId bigint
+  CreatedByUserId int
+  CreationDate datetime
 }
-Ref: conversation.last_message_id - message.id
-Ref: conversation.picture_image_id - image.id
+Ref: Conversation.LastMessageId - Message.Id
+Ref: Conversation.PictureImageId - Image.Id
+Ref: Conversation.CreatedByUserId > ApplicationUser.Id
 
-Table conversation_user {
-  user_id int
-  conversation_id bigint
-  nickname varchar
-  added_at datetime
+Table ConversationUser {
+  UserId int
+  ConversationId bigint
+  Nickname varchar
+  AddDate datetime
 }
-Ref: conversation.created_by_user_id > user.id
-Ref: conversation_user.conversation_id < conversation.id
-Ref: conversation_user.user_id < user.id
+Ref: ConversationUser.ConversationId < Conversation.Id
+Ref: ConversationUser.UserId < ApplicationUser.Id
 
-Table message {
-  id bigint [primary key]
-  conversation_id int
-  user_id int
-  content varchar
-  image_id bigint
-  message_type_id int
-  send_date datetime
+Table Message {
+  Id bigint [primary key]
+  ConversationId int
+  UserId int
+  Content varchar
+  ImageId bigint
+  MessageTypeId int
+  SendDate datetime
 }
-Ref: message.conversation_id > conversation.id
-Ref: message.user_id > user.id
-Ref: message.image_id - image.id
-Ref: message.message_type_id > message_type.id
+Ref: Message.ConversationId > Conversation.Id
+Ref: Message.UserId > ApplicationUser.Id
+Ref: Message.ImageId - Image.Id
+Ref: Message.MessageTypeId > MessageType.Id
 
-Table message_type {
-  id int [primary key]
-  support_name varchar
+Table MessageType {
+  Id int [primary key]
+  SupportName varchar
 }
