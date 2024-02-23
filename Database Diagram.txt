@@ -1,7 +1,7 @@
 Table Follow {
   FollowingUserId int
   FollowedUserId int
-  CreationDate timestamp 
+  FollowDate datetime 
 }
 
 Table ApplicationUser {
@@ -17,13 +17,18 @@ Ref: ApplicationUser.ProfilePictureImageId - Image.Id
 
 Table Post {
   Id bigint [primary key]
-  Title varchar
   Body text
   UserId int
-  Status varchar
+  PostStatusId int
   CreationDate datetime
 }
 Ref: Post.UserId > ApplicationUser.Id
+Ref: Post.PostStatusId > PostStatus.Id
+
+Table PostStatus {
+  Id int
+  SupportName varchar
+}
 
 Table PostImage{
   ImageId bigint
@@ -44,7 +49,7 @@ Ref: Like.UserId > ApplicationUser.Id
 Table Image {
   Id bigint [primary key]
   Filename varchar
-  Content image
+  Content varchar
 }
 
 Table Comment {
